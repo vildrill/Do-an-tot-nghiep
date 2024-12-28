@@ -1,0 +1,169 @@
+﻿@{
+    //load file Layout.cshtml vao day
+    Layout = "~/Areas/Admin/Views/Shared/Layout.cshtml";
+}
+@* Để phân trang thì using các đối tượng sau *@
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+@using Web1.Models
+
+@functions {
+    public MyDB db = new MyDB();
+    //hàm liệt kê các danh mục tương ứng với id sản phẩm
+
+    public string ListCategories(int _ProductId)
+    {
+        //lấy các danh mục trong table CatgoriesProducts tương ứng với _ProductId
+        List<ItemSanPham> list_sp = db.Products.Where(item => item.Id_Product == _ProductId).ToList();
+        //lấy các danh mục tương ứng với id danh mục vừa lấy ở trên
+        string str = "";
+        foreach (var item_category in list_sp)
+        {
+            ItemLoaiSP record = db.Categories.Where(item => item.Id_Category == item_category.fk_Id_Category).FirstOrDefault();
+            if (record != null)
+            {
+                str += "<div>" + record.Name + "</div>";
+            }
+        }
+        return str;
+    }   
+   }
+
+
+
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Tables</h1>
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <div style="margin-bottom:5px;">
+                <a href="/Admin/Product/Create" class="btn btn-primary">Add new product</a>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Photo</th>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Discount</th>
+                            <th>Category</th>
+                            <th>Description</th>
+
+                            <th style="width:20px;">Settings</th>
+                            <th style="width:100px;"></th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <th>@item.Id_Product</th>
+                                <th>@if (!String.IsNullOrEmpty(item.Photo) && File.Exists(Directory.GetCurrentDirectory() + "\\wwwroot\\Upload\\Products\\" + item.Photo))
+                                {
+                                    <img src="~/Upload/Products/@item.Photo" style="width:100px;">
+                                }</th>
+                                <th>@item.Name</th>
+                                <th>@String.Format("{0:#,##0}đ", item.Price)</th>
+                                <th>@item.Discount %</th>
+                                <th>@Html.Raw(ListCategories(item.Id_Product))</th>
+                                <th>@item.Description</th>
+
+                                <th>
+                                    <div class="dropdown">
+                                        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+                                            <i class="fas fa-ellipsis-v"></i>
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            <li><a href="@Url.Action("Index", "Color", new { fk_Id_Product = @item.Id_Product })" class="dropdown-item">Colors Setting</a></li>
+                                            <li><a href="@Url.Action("Index", "Size", new { fk_Id_Product = @item.Id_Product })" class="dropdown-item">Sizes Setting</a></li>
+                                        </ul>
+                                    </div>
+                                </th>
+                                <th>
+                                    <a href="/Admin/Product/Update/@item.Id_Product">Edit</a>&nbsp;
+                                    <a href="/Admin/Product/Delete/@item.Id_Product" onclick="return window.confirm('Are you sure?');">Delete</a>
+                                </th>
+                            </tr>
+                        }
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <style type="text/css">
+        .pagination {
+            display: inline-block;
+            padding-left: 0;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+            .pagination > li {
+                display: inline;
+            }
+
+                .pagination > li > a,
+                .pagination > li > span {
+                    position: relative;
+                    float: left;
+                    padding: 6px 12px;
+                    margin-left: -1px;
+                    line-height: 1.42857143;
+                    color: #007bff;
+                    text-decoration: none;
+                    background-color: #fff;
+                    border: 1px solid #ddd;
+                }
+
+            .pagination > .active > a,
+            .pagination > .active > span,
+            .pagination > .active > a:hover,
+            .pagination > .active > span:hover,
+            .pagination > .active > a:focus,
+            .pagination > .active > span:focus {
+                z-index: 2;
+                color: #fff;
+                background-color: #007bff;
+                border-color: #007bff;
+                cursor: default;
+            }
+
+            .pagination > li > a:hover,
+            .pagination > li > span:hover,
+            .pagination > li > a:focus,
+            .pagination > li > span:focus {
+                z-index: 2;
+                color: #0056b3;
+                background-color: #e9ecef;
+                border-color: #ddd;
+            }
+
+            .pagination > .disabled > span,
+            .pagination > .disabled > span:hover,
+            .pagination > .disabled > span:focus,
+            .pagination > .disabled > a,
+            .pagination > .disabled > a:hover,
+            .pagination > .disabled > a:focus {
+                color: #999;
+                cursor: not-allowed;
+                background-color: #fff;
+                border-color: #ddd;
+            }
+    </style>
+    <div class="container center">
+        <li class="pagination">
+            @Html.PagedListPager((IPagedList)Model,p=>Url.Action("Index", new {page = p}))
+        </li>
+    </div>
+    
+			
+    
+
+</div>
+<!-- /.container-fluid -->

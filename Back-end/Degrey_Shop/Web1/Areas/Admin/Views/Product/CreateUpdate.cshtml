@@ -1,0 +1,166 @@
+﻿@{
+    //Load file Layout.cshtml
+    Layout = "~/Areas/Admin/Views/Shared/Layout.cshtml";
+
+}
+
+@using Web1.Models;
+
+@functions {
+    public MyDB db = new MyDB();
+
+    public List<ItemLoaiSP> ListCategories()
+    {
+        List<ItemLoaiSP> list = db.Categories.OrderByDescending(item => item.Id_Category).ToList();
+        return list;
+    }   
+
+}
+
+
+<div class="content">
+    <div class="container-fluid">
+
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card" style="padding:20px;">
+                    <div class="card-header">
+                        <h4 class="card-title">Products Control</h4>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" enctype="multipart/form-data" action="@ViewBag.action">
+
+                            <div class="row" style="margin-top:5px;">
+                                <div class="col-md-3 px-1">
+                                    <div class="form-group">
+                                        <label>Name</label>
+                                        <input type="text" value="@if(Model != null){
+                                        <text>@Model.Name</text>
+                                        }" name="name" class="form-control" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 pl-1">
+                                    <div class="form-group">
+                                        <label>Price</label>
+                                        <input type="number" value="@if(Model!=null){
+
+                                        <text>@Model.Price</text>
+                                        }else{
+                                        <text>0</text>
+                                        }" name="price" class="form-control" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 pl-1">
+                                    <div class="form-group">
+                                        <label>Discount</label>
+                                        <input type="number" value="@if(Model!=null){
+
+                                        <text>@Model.Discount %</text>
+                                        }else{
+                                        <text>0</text>
+                                        }" name="discount" class="form-control" required>
+                                    </div>
+                                </div>
+                            </div>                           
+
+                            <div class="col">
+                                <div class="form-group mt-4">
+                                    <p class="label">Photo</p>
+                                    <input type="file" id="uploadhinh" name="photo" accept="image/*" onchange="ImagerFileAsURL()" />
+                                </div>
+                                <div class="mx-3 mt-3 rounded-pill" id="displayImg" style="max-width:200px"></div>
+                            </div>
+
+                            <div class="row" style="margin-top:5px;">
+                                <div class="col-md-12 px-1">
+                                    <label>Category</label>
+                                    <div class="form-group">
+                                        <div class="col-md-10">
+                                            @{
+                                                List<ItemLoaiSP> list = ListCategories();
+                                            }
+
+                                            <select name="Category" multiple class="form-control">
+                                                @foreach (var item_tag in list)
+                                                {
+                                                    <option @if (Model != null && item_tag.Id_Category == Model.fk_Id_Category)
+                                                        {
+                                                            <text>selected</text>
+                                                        } 
+                                                        value="@item_tag.Id_Category">@item_tag.Name</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+
+                            <div class="row" style="margin-top:5px;">
+                                <div class="col-md-6 px-1">
+                                    <label>Description</label>
+                                    <div class="form-group">
+                                        <div class="col-md-10">
+                                            <textarea name="description" id="description">@if (Model != null)
+                                                {
+                                                    <text>@Model.Description</text>
+                                                }</textarea>
+
+                                            <script language="javascript">
+                                                CKEDITOR.replace("description");
+                                            </script>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6 pl-1">
+                                    <div class="form-group">
+                                        <label>Note</label>
+                                        <input type="text" value="@if(Model!=null){
+
+                                        <text>@Model.note</text>
+                                        }else{
+                                        <text>None</text>
+                                        }" name="note" class="form-control" required>
+                                    </div>
+                                </div>
+
+                                
+                            </div>
+
+                            <div class="row" style="margin-top:5px;">
+                                <div class="col-md-10">
+                                    <input type="submit" value="Save" class="btn btn-primary">
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+
+   <script type="text/javascript">
+        function ImagerFileAsURL() {
+            var file = document.getElementById('uploadhinh').files;
+            if (file.length > 0) {
+                var fileToLoad = file[0];
+                var fileReader = new FileReader();
+                fileReader.onload = function (fileLoaderEvent) {
+                    var srcData = fileLoaderEvent.target.result;
+                    var newImage = document.createElement("img");
+                    newImage.src = srcData;
+                    document.getElementById('displayImg').innerHTML = "";
+                    document.getElementById('displayImg').appendChild(newImage);
+                }
+                fileReader.readAsDataURL(fileToLoad);
+            }
+        }
+    </script>

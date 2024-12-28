@@ -1,0 +1,213 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Register Degrey</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!--===============================================================================================-->
+	<link rel="icon" type="image/png" href="~/PageAsset/login-register-asset/images/icons/favicon.ico" />
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="~/PageAsset/login-register-asset/vendor/bootstrap/css/bootstrap.min.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="~/PageAsset/login-register-asset/fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="~/PageAsset/login-register-asset/fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="~/PageAsset/login-register-asset/vendor/animate/animate.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="~/PageAsset/login-register-asset/vendor/css-hamburgers/hamburgers.min.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="~/PageAsset/login-register-asset/vendor/animsition/css/animsition.min.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="~/PageAsset/login-register-asset/vendor/select2/select2.min.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="~/PageAsset/login-register-asset/vendor/daterangepicker/daterangepicker.css">
+	<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="~/PageAsset/login-register-asset/css/util.css">
+	<link rel="stylesheet" type="text/css" href="~/PageAsset/login-register-asset/css/main.css">
+	<!--===============================================================================================-->
+</head>
+<body style="background-color: #666666;">
+
+	<div class="limiter">
+		<div class="container-login100">
+			<div class="wrap-login100">
+				<form class="login100-form validate-form" action="/Account/RegisterPost" method="post">
+					<span class="login100-form-title p-b-43">
+						Sign up
+					</span>
+
+
+					<div class="wrap-input100 validate-input" data-validate="Valid email is required: ex@abc.xyz">
+						<input class="input100" type="text" name="email">
+						<span class="focus-input100"></span>
+						<span class="label-input100">Email</span>
+					</div>
+
+					<div class="wrap-input100">
+						<input class="input100" type="text" name="name">
+						<span class="focus-input100"></span>
+						<span class="label-input100">Full Name</span>
+					</div>
+					<div class="wrap-input100">
+						<input class="input100" type="number" name="phone">
+						<span class="focus-input100"></span>
+						<span class="label-input100">Phone</span>
+					</div>
+
+
+					<div class="wrap-input100 validate-input" data-validate="Password is required">
+						<input class="input100" type="password" name="password">
+						<span class="focus-input100"></span>
+						<span class="label-input100">Password</span>
+					</div>
+					<div class="">
+						<p>Address<span>*</span></p>
+						<div class="row mx-1">
+							<select id="provinceSelect" name="idTinh" class="col-lg-3 form-control">
+								<option value="">Choose city</option>
+								@foreach (var city in Model)
+								{
+									<option value="@city.Id">@city.Name</option>
+								}
+							</select>
+
+
+							<!-- Quận/Huyện -->
+							<select id="district" name="district" class="mx-3 col-lg-3 form-control">
+								<option value="">Choose district</option>
+							</select>
+
+							<!-- Xã/Phường -->
+							<select id="wardSelect" name="wardSelect" class=" col-lg-3 form-control">
+								<option value="">Choose ward</option>
+							</select>
+
+						</div>
+					</div>
+					<div class="container-login100-form-btn mt-3">
+						<button type="submit" value="Register" class="btn btn-primary">Register</button>
+					</div>
+
+					<div class="text-center p-t-46 p-b-20">
+						<span class="txt2">
+							Already have an account? <a href="/Account/Login" class="txt1">Sign in now</a>
+						</span>
+					</div>										
+				</form>
+
+				<div class="login100-more" style="text-align: center;">
+					<img src="~/PageAsset/login-register-asset/images/bg-01.jpg" style="width: 100%; height: 100%;text-align: center;">
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+
+	<!--===============================================================================================-->
+	<script src="~/PageAsset/login-register-asset/vendor/jquery/jquery-3.2.1.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="~/PageAsset/login-register-asset/vendor/animsition/js/animsition.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="~/PageAsset/login-register-asset/vendor/bootstrap/js/popper.js"></script>
+	<script src="~/PageAsset/login-register-asset/vendor/bootstrap/js/bootstrap.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="~/PageAsset/login-register-asset/vendor/select2/select2.min.js"></script>
+	<!--===============================================================================================-->
+	<script src="~/PageAsset/login-register-asset/vendor/daterangepicker/moment.min.js"></script>
+	<script src="~/PageAsset/login-register-asset/vendor/daterangepicker/daterangepicker.js"></script>
+	<!--===============================================================================================-->
+	<script src="~/PageAsset/login-register-asset/vendor/countdowntime/countdowntime.js"></script>
+	<!--===============================================================================================-->
+	<script src="~/PageAsset/login-register-asset/js/main.js"></script>
+
+</body>
+</html>
+
+	<script>
+	$(document).ready(function () {
+		// Khi người dùng thay đổi lựa chọn trong dropdown tỉnh/thành phố
+		$('#provinceSelect').change(function () {
+			var selectedCityId = $(this).val(); // Lấy giá trị đã chọn
+
+			// Gọi AJAX để lấy dữ liệu cho dropdown quận/huyện
+			$.ajax({
+				url: '/Cart/danhSachQuanHuyen',
+				type: 'GET',
+				data: { id_city: selectedCityId },
+				success: function (response) {
+					console.log('AJAX request for districts sent successfully:', response);
+
+					// Đảm bảo rằng response là một mảng
+					if (Array.isArray(response)) {
+						// Xóa các tùy chọn hiện có trong dropdown
+						$('.district').empty();
+
+						// Thêm tùy chọn mặc định
+						$('.district').append($('<option>', {
+							value: '',
+							text: 'Chọn Quận/Huyện'
+						}));
+
+						// Thêm các tùy chọn mới từ response
+						$.each(response, function (index, district) {
+							console.log(district.id),
+								$('#district').append($('<option>', {
+									value: district.id,
+									text: district.name
+								}));
+						});
+					} else {
+						console.log('Response is not an array:', response);
+					}
+				},
+				error: function (xhr, textStatus, errorThrown) {
+					console.log('Lỗi:', errorThrown);
+				}
+			});
+
+		});
+
+		// Khi người dùng thay đổi lựa chọn trong dropdown quận/huyện
+		$('#district').change(function () {
+			var selectedDistrictId = $(this).val(); // Lấy giá trị đã chọn
+
+			// Gọi AJAX để lấy dữ liệu cho dropdown xã/phường
+			$.ajax({
+				url: '/Cart/danhSachXaPhuong',
+				type: 'GET',
+				data: { id_district: selectedDistrictId },
+				success: function (response) {
+					console.log('AJAX request for districts sent successfully:', response);
+
+					// Đảm bảo rằng response là một mảng
+					if (Array.isArray(response)) {
+						// Xóa các tùy chọn hiện có trong dropdown
+						$('.wardSelect').empty();
+
+						// Thêm tùy chọn mặc định
+						$('.wardSelect').append($('<option>', {
+							value: '',
+							text: 'Chọn Xã phường'
+						}));
+
+						// Thêm các tùy chọn mới từ response
+						$.each(response, function (index, ward) {
+							console.log(district.id),
+								$('#wardSelect').append($('<option>', {
+									value: ward.id,
+									text: ward.name
+								}));
+						});
+					} else {
+						console.log('Response is not an array:', response);
+					}
+				},
+				error: function (xhr, textStatus, errorThrown) {
+					console.log('Lỗi:', errorThrown);
+				}
+			});
+		});
+	});
+	</script>

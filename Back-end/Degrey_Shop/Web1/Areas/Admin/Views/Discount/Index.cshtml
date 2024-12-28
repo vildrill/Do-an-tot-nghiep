@@ -1,0 +1,71 @@
+﻿@{
+    //load file Layout.cshtml vao day
+    Layout = "~/Areas/Admin/Views/Shared/Layout.cshtml";
+}
+@* Để phân trang thì using các đối tượng sau *@
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+@using Web1.Models
+
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Tables</h1>
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <div style="margin-bottom:5px;">
+                <a href="/Admin/Discount/Create" class="btn btn-primary">Add new discount</a>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Discount Code</th>
+                            <th>Photo</th>
+                            <th>Discount Percent</th>
+                            <th>Description</th>
+                            <th>Status</th>
+                            <th>End Date</th>                            
+                            <th style="width:100px;"></th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <th>@item.Name</th>
+                                <th>
+                                    @if (!String.IsNullOrEmpty(item.Photo) && File.Exists(Directory.GetCurrentDirectory() + "\\wwwroot\\Upload\\Discounts\\" + item.Photo))
+                                {
+                                    <img src="~/Upload/Discounts/@item.Photo" style="width:100px;">
+                                }</th>
+                                <th>@item.Percent</th>
+                                <th>@item.Description</th>
+                                <th>                                    
+                                    @if (item.Status == 1)
+                                    {
+                                        <text><label class="label label-danger">Đang áp dụng</label></text>
+                                    }
+                                    @if (item.Status == 0 && DateTime.Now > item.End_Date)
+                                    {
+                                        <text><label class="label label-primary">Đã quá hạn</label></text>
+                                    }
+                                </th>
+                                <th>@item.End_Date.ToString("dd/MM/yyyy")</th>
+
+                                <th>
+                                    <a href="/Admin/Discount/Update/@item.Id_Discount">Edit</a>&nbsp;
+                                    <a href="/Admin/Discount/Delete/@item.Id_Discount" onclick="return window.confirm('Are you sure?');">Delete</a>
+                                </th>
+                            </tr>
+                        }
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- /.container-fluid -->

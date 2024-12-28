@@ -1,0 +1,95 @@
+﻿@using Web1.Models
+@using Newtonsoft.Json
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+<!-- Offcanvas Menu Begin -->
+<div class="offcanvas-menu-overlay"></div>
+<div class="offcanvas-menu-wrapper">
+    <div class="offcanvas__option">
+        <div class="offcanvas__links">
+            <a href="/Account/Login">Sign in</a>
+            <a href="/Account/Register">Sign up</a>
+        </div>
+    </div>
+    <div class="offcanvas__nav__option">
+        <a href="#" class="search-switch"><img src="~/PageAsset/img/icon/search.png" alt=""></a>
+        <a href="#"><img src="~/PageAsset/img/icon/heart.png" alt=""></a>
+        <a href="/Cart"><img src="~/PageAsset/img/icon/cart.png" alt=""> <span>2</span></a>
+    </div>
+    <div id="mobile-menu-wrap"></div>
+    <div class="offcanvas__text">
+        <p>degrey.vn@gmail.com</p>
+    </div>
+</div>
+<!-- Offcanvas Menu End -->
+<!-- Header Section Begin -->
+<header class="header">
+    <div class="header__top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-7">
+                    <div class="header__top__left">
+                        <p>degrey.vn@gmail.com</p>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-5">
+                    <div class="header__top__right">
+                        <div class="header__top__links">
+                            @if (!String.IsNullOrEmpty(Context.Session.GetString("customer_email")))
+                            {
+                                <a style="color: white;">@Context.Session.GetString("customer_email")</a>
+                                <a href="/Account/Logout">Logout</a>
+                            }
+                            else
+                            {
+                                <a href="/Account/Login">Sign in</a>
+                                <a href="/Account/Register">Sign up</a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-3">
+                <div class="header__logo">
+                    <a href="/Home"><img src="~/PageAsset/img/degrey/logo1.png" alt=""></a>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6">
+                <nav class="header__menu mobile-menu">
+                    <ul>
+                        <li class="active"><a href="/Home">Home</a></li>
+                        <li><a href="/Product">Product</a></li>
+                        <li><a href="/Store">Store</a></li>
+                        <li><a href="/About">About Us</a></li>
+                    </ul>
+                </nav>
+            </div>
+            @{
+                var session = HttpContextAccessor.HttpContext.Session;
+
+                var id_NguoiDungS = session.GetString("customer_id");
+                int id_NguoiDung = Convert.ToInt32(id_NguoiDungS);
+            }
+            <div class="col-lg-3 col-md-3">
+                <div class="header__nav__option">
+                    <a href="#" class="search-switch"><img src="~/PageAsset/img/icon/search.png" alt=""></a>
+                    <a href="@Url.Action("YourOrder", "Order", new { id_User = @id_NguoiDung })"><img src="~/PageAsset/img/icon/heart.png" alt=""></a>
+                    <a href="/Cart"><img src="~/PageAsset/img/icon/cart.png" alt=""><span>2</span></a>
+                </div>
+
+            </div>
+        </div>
+        <div class="canvas__open"><i class="fa fa-bars"></i></div>
+    </div>
+</header>
+
+<!-- AI -->
+<script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+<df-messenger intent="WELCOME"
+              chat-title="Degreyshop_AI"
+              agent-id="0c4f3bff-7d7e-4fc8-95ce-7938afb279d3"
+              language-code="en"></df-messenger>

@@ -1,0 +1,210 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@{
+    //load file Layout.cshtml vao day
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+@* Để phân trang thì using các đối tượng sau *@
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+@using Web1.Models
+
+
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__text">
+                    <h4>Order</h4>
+                    <div class="breadcrumb__links">
+                        <a href="/Home">Home</a>
+                        <span>Order History</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+
+
+<div class="container">
+    <div class="card-body "></div>
+    <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Order ID </th>
+                    <th>Customer</th>
+                    <th>Created Date</th>
+                    <th>Address </th>
+                    <th>Total price</th>
+                    <th>Note</th>
+                    <th>Status</th>
+                    <th>
+                        
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                   
+                    <tr>
+                        <td>
+                        <p>@item.Id_Order</p>
+                        </td>
+                        <td>
+                        <p>@item.fk_Id_User</p>
+                        </td>
+                        <td>
+                            @item.Create_Date.ToString("dd/MM/yyyy")
+                        </td>
+                        <td>
+                           <p>@item.Address</p>
+                        </td>
+                        <td>
+                            <p>@string.Format("{0:#,#.}", item.Total_Price)đ</p>
+                        </td>
+                        <td>
+                            <p>@item.Note</p>
+                        </td>
+
+                        <td style="text-align: center; vertical-align: middle;">
+                                @if (@item.Status == 1)
+                                {
+                                <span class="badge bg-primary"><i class="fas fa-clock"></i> Processing</span>
+                                }
+                                else if (@item.Status == 2)
+                                {
+                                <span class="badge bg-success"><i class="fas fa-check-circle"></i> Paid</span>
+                                }
+                                else if (@item.Status == 3)
+                                {
+                                <span class="badge bg-warning text-dark"><i class="fas fa-truck"></i> Shipping</span>
+                                }
+                                else if (@item.Status == 4)
+                                {
+                                <span class="badge bg-danger"><i class="fas fa-times-circle"></i> Cancel by shop</span>
+                                }
+                                else if (@item.Status == 5)
+                                {
+                                <span class="badge bg-primary"><i class="fas fa-check-circle text-white"></i> Done</span>
+                                }
+                                else if (@item.Status == 6)
+                                {
+                                <span class="badge bg-danger"><i class="fas fa-times-circle"></i> Cancel by customer</span>
+                                }
+                        </td>
+
+                        <td style="text-align: center; vertical-align: middle;">
+                            <div class="dropdown d-inline">
+                                <button class="btn btn-primary" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-bars"></i>
+                                </button>
+
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    @if (@item.Status != null)
+                                    {
+
+                                        <li>
+                                            <a class="dropdown-item" href="@Url.Action("YourOrderDetail", "Order", new { id_Order = @item.Id_Order })">
+                                                <i class="fas fa-eye"></i> View detail
+                                            </a>
+                                        </li>
+                                    }
+
+
+                                    @if (@item.Status == 1 || @item.Status == 2)
+                                    {
+
+                                        <li>
+                                            <a class="dropdown-item" href="@Url.Action("doiTrangThai", "Order", new { value = 6, id_Order = @item.Id_Order  ,  area = (string)null })">
+                                                <i class="fas fa-times-circle text-danger"></i> Cancel order
+                                            </a>
+                                        </li>
+
+                                    }
+
+                                </ul>
+                            </div>
+                        </td>                      
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+       
+    </div>
+    
+</div>
+
+<style type="text/css">
+    .pagination {
+        display: inline-block;
+        padding-left: 0;
+        margin: 20px 0;
+        border-radius: 4px;
+    }
+
+        .pagination > li {
+            display: inline;
+        }
+
+            .pagination > li > a,
+            .pagination > li > span {
+                position: relative;
+                float: left;
+                padding: 6px 12px;
+                margin-left: -1px;
+                line-height: 1.42857143;
+                color: #007bff;
+                text-decoration: none;
+                background-color: #fff;
+                border: 1px solid #ddd;
+            }
+
+        .pagination > .active > a,
+        .pagination > .active > span,
+        .pagination > .active > a:hover,
+        .pagination > .active > span:hover,
+        .pagination > .active > a:focus,
+        .pagination > .active > span:focus {
+            z-index: 2;
+            color: #fff;
+            background-color: #007bff;
+            border-color: #007bff;
+            cursor: default;
+        }
+
+        .pagination > li > a:hover,
+        .pagination > li > span:hover,
+        .pagination > li > a:focus,
+        .pagination > li > span:focus {
+            z-index: 2;
+            color: #0056b3;
+            background-color: #e9ecef;
+            border-color: #ddd;
+        }
+
+        .pagination > .disabled > span,
+        .pagination > .disabled > span:hover,
+        .pagination > .disabled > span:focus,
+        .pagination > .disabled > a,
+        .pagination > .disabled > a:hover,
+        .pagination > .disabled > a:focus {
+            color: #999;
+            cursor: not-allowed;
+            background-color: #fff;
+            border-color: #ddd;
+        }
+</style>
+<div class="container center">
+    <li class="pagination">
+        @Html.PagedListPager((IPagedList)Model, p => Url.Action("YourOrder", new { page = p, id_User = ViewBag.id_user }))
+    </li>
+</div>

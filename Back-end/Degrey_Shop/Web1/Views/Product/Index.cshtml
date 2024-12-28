@@ -1,0 +1,119 @@
+﻿@using Web1.Models
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+@{
+    Layout = "~/Views/Shared/LayoutShop.cshtml";
+}
+
+
+<!-- Start product -->
+@foreach (var item in Model)
+{
+    <div class="col-lg-4 col-md-6 col-sm-6">
+        <div class="product__item">
+            <div class="product__item__pic set-bg" data-setbg="/Upload/Products/@item.Photo">
+                <div class="label new">New</div>
+                <ul class="product__hover">
+                    <li><a href="#"><img src="/PageAsset/img/icon/heart.png" alt=""></a></li>
+                    <li>
+                        <a href="#"><img src="/PageAsset/img/icon/compare.png" alt=""> <span>Compare</span></a>
+                    </li>
+                    <li><a href="#"><img src="/PageAsset/img/icon/search.png" alt=""></a></li>
+                </ul>
+            </div>
+            <div class="product__item__text">
+                <h6>@item.Name</h6>
+                <a href="/Product/Detail/@item.Id_Product" class="add-cart">View detail</a>
+                <div class="rating">
+                    <i class="fa fa-star-o"></i>
+                    <i class="fa fa-star-o"></i>
+                    <i class="fa fa-star-o"></i>
+                    <i class="fa fa-star-o"></i>
+                    <i class="fa fa-star-o"></i>
+                </div>
+                <h5>@string.Format("{0:#,#.}",item.Price)đ</h5>
+                <div class="product__color__select">
+                    <label for="pc-4">
+                        <input type="radio" id="pc-4">
+                    </label>
+                    <label class="active black" for="pc-5">
+                        <input type="radio" id="pc-5">
+                    </label>
+                    <label class="grey" for="pc-6">
+                        <input type="radio" id="pc-6">
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<style type="text/css">
+    .pagination {
+        display: inline-block;
+        padding-left: 0;
+        margin: 20px 0;
+        border-radius: 4px;
+    }
+
+        .pagination > li {
+            display: inline;
+        }
+
+            .pagination > li > a,
+            .pagination > li > span {
+                position: relative;
+                float: left;
+                padding: 6px 12px;
+                margin-left: -1px;
+                line-height: 1.42857143;
+                color: #007bff;
+                text-decoration: none;
+                background-color: #fff;
+                border: 1px solid #ddd;
+            }
+
+        .pagination > .active > a,
+        .pagination > .active > span,
+        .pagination > .active > a:hover,
+        .pagination > .active > span:hover,
+        .pagination > .active > a:focus,
+        .pagination > .active > span:focus {
+            z-index: 2;
+            color: #fff;
+            background-color: #007bff;
+            border-color: #007bff;
+            cursor: default;
+        }
+
+        .pagination > li > a:hover,
+        .pagination > li > span:hover,
+        .pagination > li > a:focus,
+        .pagination > li > span:focus {
+            z-index: 2;
+            color: #0056b3;
+            background-color: #e9ecef;
+            border-color: #ddd;
+        }
+
+        .pagination > .disabled > span,
+        .pagination > .disabled > span:hover,
+        .pagination > .disabled > span:focus,
+        .pagination > .disabled > a,
+        .pagination > .disabled > a:hover,
+        .pagination > .disabled > a:focus {
+            color: #999;
+            cursor: not-allowed;
+            background-color: #fff;
+            border-color: #ddd;
+        }
+</style>
+<div class="container center">
+    <li class="pagination">
+        @Html.PagedListPager((IPagedList)Model, p => Url.Action("Index", new { page = p }))
+    </li>
+</div>
+
+
+
+

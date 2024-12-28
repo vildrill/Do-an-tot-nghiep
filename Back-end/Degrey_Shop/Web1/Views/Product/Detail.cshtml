@@ -1,0 +1,524 @@
+﻿@using Web1.Models
+@using Web1.MyClass
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@{
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+
+@functions{
+    public MyDB db = new MyDB();    
+    public string GetCategoryNameByProductId(int productId)
+    {
+        var product = db.Products.FirstOrDefault(p => p.Id_Product == productId);
+
+        if (product != null)
+        {
+            int categoryId = product.fk_Id_Category;
+
+            var category = db.Categories.FirstOrDefault(c => c.Id_Category == categoryId);
+
+            if (category != null)
+            {
+
+                return category.Name;
+            }
+            else
+            {
+                return "Category not found";
+            }
+        }
+        else
+        {
+            return "Product not found";
+        }
+    }
+}
+
+    <section class="shop-details">
+        <div class="product__details__pic">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="product__details__breadcrumb">
+                            <a href="/Home">Home</a>
+                            <a href="/Product">Product</a>
+                            <span>Product detail</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3 col-md-3">
+                        <ul class="nav nav-tabs" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab">
+
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab">
+                                    
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab">
+                                   
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-toggle="tab" href="#tabs-4" role="tab">
+                                    
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-6 col-md-9">
+
+                    <img id="productImage" src="~/Upload/Products/@Model.Photo" alt="Product Image" style="width:300px;">
+
+                </div>
+                </div>
+            </div>
+        </div>
+        <div class="product__details__content">
+            <div class="container">
+                <div class="row d-flex justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="product__details__text">
+                            <h4>@Model.Name</h4>
+                            <div class="rating">
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star"></i>
+                                <i class="fa fa-star-o"></i>
+
+                            </div>
+                        <h3 id="Price">@string.Format("{0:#,#.}", Model.Price)đ</h3>
+                            <h4>Discount : @Model.Discount %</h4>
+                            <p>
+                                Made by Degrey with love!
+                            </p>
+                        
+                        <div class="product__details__option">
+                            @{
+                                int productID = Model.Id_Product;
+                                List<ItemKichCo> _listRecord = db.Sizes.Where(item => item.fk_Id_Product == productID).OrderByDescending(item => item.Id_Size).ToList();
+
+                            }
+                            @if (_listRecord != null && _listRecord.Count > 0)
+                            {
+                                <div class="product__details__option__size">
+                                    <span>Size:</span>
+                                    @for (int i = 0; i < _listRecord.Count; i++)
+                                    {
+                                        <label><button class="btn" id="btn-size" data-size="@_listRecord[i].Name" style="text-align: center">@_listRecord[i].Name </button></label>
+                                        
+                                    }
+                                </div>
+                                <input type="hidden" id="size" />
+
+                            }
+                         
+                                @{
+                                int productId = Model.Id_Product; // Giả sử Id_Product chứa khóa ngoại tới bảng chứa màu sắc
+                                List<ItemMau> _ListRecord = db.Colors.Where(item => item.fk_Id_Product == productId).OrderByDescending(item => item.Id_Color).ToList();
+
+                                }
+
+                            @if (_ListRecord != null && _ListRecord.Count > 0)
+                            {
+                                <div class="product__details__option__color">
+                                    <span>Color:</span>
+                                    @for (int i = 0; i < _ListRecord.Count; i++)
+                                    {
+                                        <label><button class="btn" id="btn-mausac" data-idmau="@_ListRecord[i].Id_Color" data-color="@_ListRecord[i].Name" style="background-color:@_ListRecord[i].Color_Code;"></button></label>
+                                    }
+                                    <input type="hidden" id="mau" />
+                                </div>
+                            }
+
+
+                            </div>
+                            <div class="product__details__cart__option">
+                            <div class="quantity">
+                                <span>Quantity:</span>
+                                <div class="pro-qty">
+                                    <input type="text" id="quantity" value="1">
+                                </div>
+                            </div>
+                            <button data-product-id="@Model.Id_Product" class="primary-btn " id="btn-add-to-cart">Add to cart</button>
+                            </div>
+                            <div class="product__details__btns__option">
+                            <a href="#"><i class="fa fa-heart"></i>Add to wishlist</a>
+                                <a href="#"><i class="fa fa-exchange"></i>Add to compare</a>
+                            </div>
+                            <div class="product__details__last__option">                                
+                                <ul>
+                                    <li>Category: @GetCategoryNameByProductId(Model.Id_Product) </li>
+                                    <li><span>@Model.Description</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="product__details__tab">
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" data-toggle="tab" href="#tabs-5"
+                                       role="tab">Product Reviews</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" data-toggle="tab" href="#tabs-6" role="tab">
+                                    Suggested Products
+                                    </a>
+                                </li>                                
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="tabs-5" role="tabpanel">
+                                    <div class="product__details__tab__content">                                        
+                                        <div class="product__details__tab__content__item">
+                                        <div class="container bg-light mt-5">
+                                            <div class="row">
+                                                <p class="h3 font-weight-bold mt-lg-3">Product reviews:</p>
+                                                <hr class="my-2">
+
+                                                @{
+                                                    var session = HttpContextAccessor.HttpContext.Session;
+
+                                                    var id_NguoiDungS = session.GetString("customer_id");
+                                                    int id_NguoiDung = Convert.ToInt32(id_NguoiDungS);
+
+                                                    var id_sanPham = Model.Id_Product;
+                                                    var tenNguoiDung = session.GetString("customer_Name");
+                                                }
+
+                                                @if (tenNguoiDung != null)
+                                                {
+                                                    <div class="col-lg-6">
+                                                        <form id="ratingForm">
+                                                            <div>
+                                                                <label for="username"></label>
+                                                                <p class="font-weight-bold">@tenNguoiDung</p>
+                                                            </div>
+                                                            <div>
+                                                                <label for="rating">Rating score:</label>
+                                                                <div class="rating">
+                                                                    <input type="radio" id="star5" name="rating" value="5">
+                                                                    <label for="star5"></label>
+                                                                    <input type="radio" id="star4" name="rating" value="4">
+                                                                    <label for="star4"></label>
+                                                                    <input type="radio" id="star3" name="rating" value="3">
+                                                                    <label for="star3"></label>
+                                                                    <input type="radio" id="star2" name="rating" value="2">
+                                                                    <label for="star2"></label>
+                                                                    <input type="radio" id="star1" name="rating" value="1">
+                                                                    <label for="star1"></label>
+                                                                </div>
+                                                            </div>
+
+                                                            <div>
+                                                                <label for="review">Review:</label><br>
+                                                                <textarea id="review" name="review" rows="4" cols="50" required></textarea>
+                                                            </div>
+
+                                                            <p>You must buy this product if you want to review it!</p>
+                                                            <button type="submit" class="btn btn-dark">Send review</button>
+                                                        </form>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="col ">
+                                                        <p class="h4">You must login if you want to review product!</p>
+                                                    </div>
+
+                                                }
+                                                <div class="col">
+                                                    @{
+                                                        int Id = Model.Id_Product;
+                                                        var _ListRating = db.Rating.Where(item => item.fk_Id_Product == Id)
+                                                        .OrderByDescending(item => item.Rate_Date)
+                                                        .ToList();
+                                                    }
+                                                    <p class="h4">Reviews:</p>
+                                                    @if (_ListRating != null && _ListRating.Any())
+                                                    {
+                                                        foreach (var danhGia in _ListRating)
+                                                        {
+                                                            <div class="col-lg-12">
+																<div c@danhGia.Rate_Date.ToString("dd /MM/yyyy")lass ="d-flex">
+                                                                    <div class="rounded-circle bg-secondary text-light d-flex justify-content-center align-items-center mt-2" style="width: 30px; height: 30px;">
+                                                                        <i class="fas fa-user"></i>
+                                                                    </div>
+                                                                    <div class="mx-2">
+                                                                        @if (danhGia.fk_Id_User != null)
+                                                                        {
+                                                                            <div class="font-weight-bold">User</div>
+                                                                            <div></div>
+                                                                            <div class="rating">
+                                                                                @for (int i = 0; i < danhGia.Rating; i++)
+                                                                                {
+                                                                                    <span><i class="fas fa-star text-warning" style="font-size: 15px;"></i></span>
+                                                                                }
+                                                                            </div>
+                                                                            <div>
+                                                                                <p>@danhGia.Comment</p>
+                                                                            </div>
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <div class="font-weight-bold">User does not exist!</div>
+                                                                        }
+                                                                    </div>
+                                                                </div>
+                                                                <hr class="my-2">
+                                                            </div>
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <p>There are no reviews yet.</p>
+                                                    }
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>                                        
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="tabs-6" role="tabpanel">
+                                    <div class="product__details__tab__content">
+                                        <div class="product__details__tab__content__item" style="display:flex;">
+
+                                            @{
+                                            string note = Model.note;
+                                            List<ItemSanPham> listSP = db.Products.Where(item => item.note == note).OrderByDescending(item => item.Price).ToList();
+                                            }
+                                        @foreach (var item in listSP)
+                                        {
+                                            <div class="col-lg-4 ">
+                                                <div class="product__item">
+                                                    <div class="product__item__pic set-bg" data-setbg="/Upload/Products/@item.Photo">
+                                                        <div class="label new">New</div>
+                                                        <ul class="product__hover">
+                                                            <li><a href="#"><img src="/PageAsset/img/icon/heart.png" alt=""></a></li>
+                                                            <li>
+                                                                <a href="#"><img src="/PageAsset/img/icon/compare.png" alt=""> <span>Compare</span></a>
+                                                            </li>
+                                                            <li><a href="#"><img src="/PageAsset/img/icon/search.png" alt=""></a></li>
+                                                        </ul>
+                                                    </div>
+                                                    <div class="product__item__text">
+                                                        <h6>@item.Name</h6>
+                                                        <a href="/Product/Detail/@item.Id_Product" class="add-cart">View detail</a>
+                                                        <div class="rating">
+                                                            <i class="fa fa-star-o"></i>
+                                                            <i class="fa fa-star-o"></i>
+                                                            <i class="fa fa-star-o"></i>
+                                                            <i class="fa fa-star-o"></i>
+                                                            <i class="fa fa-star-o"></i>
+                                                        </div>
+                                                        <h5>@string.Format("{0:#,#.}", item.Price)đ</h5>
+                                                        <div class="product__color__select">
+                                                            <label for="pc-4">
+                                                                <input type="radio" id="pc-4">
+                                                            </label>
+                                                            <label class="active black" for="pc-5">
+                                                                <input type="radio" id="pc-5">
+                                                            </label>
+                                                            <label class="grey" for="pc-6">
+                                                                <input type="radio" id="pc-6">
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Shop Details Section End -->
+    <<style>
+         .mauMau {
+             width: 40px;
+             height: 20px;
+             display: inline-block;
+         }
+    </style>
+<script type="text/javascript" src="~/Scripts/Cart.js"></script>
+<script>
+
+    $('.btn#btn-mausac').click(function () {
+        var colorCode = $(this).data('color');
+        var idMau = $(this).data('idmau');
+        console.log(idMau);
+        console.log(colorCode);
+        $('#mau').val(colorCode);
+
+        $.ajax({
+            url: '/Product/GetColor', 
+            type: 'GET',
+            data: { idMau: idMau },
+            success: function (response) {
+                if (response.success) {
+                    console.log(response);
+                    $('#productImage').attr('src', '/Upload/Colors/' + response.color.photo);
+
+                } else {
+                    console.log('Error fetching image:', response.message);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('AJAX error:', error);
+            }
+        });
+    });
+
+    $('.btn#btn-size').click(function () {
+        var sizeCode = $(this).data('size');
+
+
+        $('#size').val(sizeCode);
+    });
+    
+
+    $('#btn-add-to-cart').click(function () {
+            var productId = $(this).data('product-id');
+            var colorValue = $('#mau').val();
+            var sizeValue = $('#size').val();
+            var quantityValue = $('#quantity').val();
+            var priceText = $('#Price').text();
+
+            var priceValue = parseFloat(priceText.replace('$', '').replace(/,/g, ''));
+
+        if (colorValue == "" || sizeValue == "") {
+            $('#errorMessage').text('Chọn màu và kích thước');
+            $('#errorAlert').fadeIn('slow').delay(2000).fadeOut('slow');
+        } else {
+            CartClass.addToCart(productId, colorValue, sizeValue, quantityValue, priceValue);
+        }
+
+    });
+
+
+
+    document.getElementById("ratingForm").addEventListener("submit", function (event) {
+        event.preventDefault();
+        var username = document.getElementById("username").value;
+        var rating = document.querySelector('input[name="rating"]:checked').value;
+        var review = document.getElementById("review").value;
+        alert("(" + username + ") has reviewed " + rating + " with: " + review);
+
+    });
+
+    $(document).ready(function () {
+        $('#ratingForm').submit(function (e) {
+            e.preventDefault();
+
+            var rating = $('input[name=rating]:checked').val();
+            var review = $('#review').val();
+
+            var data = {
+                id_NguoiDung: @id_NguoiDung,
+                id_sanPham: @id_sanPham,
+                rating: rating,
+                review: review
+            };
+            
+            $.ajax({
+                url: '/Product/SubmitReview',
+                type: 'POST',
+                dataType: 'json',
+                data: data,
+                success: function (response) {
+                    if (response.success) {
+                        $('#successMessage').text('You have reviewed this product');
+                        $('#successAlert').fadeIn('slow').delay(2000).fadeOut('slow');
+                        //console.log("Đã đánh giá sản phẩm thành công");
+                    } else {
+                        $('#errorMessage').text('You need to buy this product!');
+                        $('#errorAlert').fadeIn('slow').delay(2000).fadeOut('slow');
+                    }
+                },
+                error: function (error) {
+                    $('#successMessage').text('Error');
+                    $('#successAlert').fadeIn('slow').delay(2000).fadeOut('slow');
+                }
+            });
+        });
+    });
+</script>
+
+
+
+<style>
+    .btn-tuychon {
+        border-color: #ccc; /* Màu viền của nút */
+        border-radius: 5px; /* Độ cong góc của nút */
+        background-color: #fff; /* Màu nền của nút */
+    }
+
+        .btn-tuychon.selected {
+            border-color: #007bff; /* Màu viền của nút khi được chọn */
+            color: #007bff; /* Màu chữ của nút khi được chọn */
+        }
+
+    .selected {
+        border-color: #007bff; /* Màu viền khi nút được chọn */
+        color: #007bff; /* Màu chữ khi nút được chọn */
+    }
+
+
+    .rating {
+        unicode-bidi: bidi-override;
+        direction: rtl;
+    }
+
+        .rating input {
+            display: none;
+        }
+
+        .rating label {
+            cursor: pointer;
+            display: inline-block;
+            padding: 1px;
+            font-size: 30px;
+            border-radius: 50%; /* Bo tròn các cạnh */
+            margin-right: 1px; /* Khoảng cách giữa các ngôi sao */
+            -webkit-text-stroke-width: 1px; /* Độ dày của đường viền xung quanh các ngôi sao */
+            -webkit-text-stroke-color: #ccc; /* Màu của đường viền xung quanh các ngôi sao */
+        }
+
+            .rating label:before {
+                content: "\2605";
+                color: transparent; /* Làm cho màu của ngôi sao trở thành trong suốt */
+            }
+
+            .rating input:checked ~ label:before,
+            .rating label:hover:before {
+                color: #ffcc00;
+                text-shadow: 0 0 5px #ffcc00; /* Tạo hiệu ứng glow cho ngôi sao được chọn hoặc di chuột qua */
+            }
+
+    .submit-btn {
+        display: block;
+        margin-top: 10px;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+    }
+
+</style>

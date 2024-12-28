@@ -1,0 +1,99 @@
+﻿@model Web1.Models.ItemSanPham
+
+@{
+    //Load file Layout.cshtml
+    Layout = "~/Areas/Admin/Views/Shared/Layout.cshtml";
+
+}
+
+
+<div class="content">
+    <div class="container">
+        <div class="row">
+            <form method="post" action="CreatePost" enctype="multipart/form-data">           
+
+                <div class="col-lg-5">
+                    <div class="card" style="padding:20px;">
+                        <div class="card-header">
+                            <h4 class="card-title">Color Control</h4>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="form-group mt-5">
+
+                                <div class="col-sm-9">
+                                    <label for="name">@Model.Name</label>
+                                    <input type="hidden" id="Id_Product" name="Id_Product" value="@Model.Id_Product" />ID: @Model.Id_Product
+                                </div>
+
+                            </div>
+
+
+                            <div class="form-group mt-5">
+                                <label for="name">Name</label>
+                                <input id="name" name="name" class="form-control">
+                            </div>
+
+
+                            <div class="form-group mt-5">
+                                <label for="color_code">Color Code</label>
+                                <input type="color" id="inputColor" class="form-control" oninput="setColor()">
+                                <input id="maMauInput" name="color_code" class="form-control">
+                            </div>
+
+
+
+                            <div class="form-group mt-4">
+                                <label for="photo" class="label">Photo</label>
+                                <input type="file" id="photo" name="file" accept="image/*" onchange="ImagerFileAsURL()" class="form-control-file">
+                            </div>
+
+                            <div class="mx-3 mt-3 rounded-pill" id="displayImg" style="width: 100%"></div>
+
+
+
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <input type="submit" value="Save" class="btn btn-primary">
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    </div>
+
+            </form>
+            </div>
+
+            
+        </div>
+    </div>
+
+
+
+<script type="text/javascript">
+    function ImagerFileAsURL() {
+        var file = document.getElementById('photo').files;
+        if (file.length > 0) {
+            var fileToLoad = file[0];
+            var fileReader = new FileReader();
+            fileReader.onload = function (fileLoaderEvent) {
+                var srcData = fileLoaderEvent.target.result;
+                var newImage = document.createElement("img");
+                newImage.src = srcData;
+                document.getElementById('displayImg').innerHTML = "";
+                document.getElementById('displayImg').appendChild(newImage);
+            }
+            fileReader.readAsDataURL(fileToLoad);
+        }
+    }
+      
+</script>
+<script>
+     function setColor() {
+        var colorValue = document.getElementById("inputColor").value;
+
+
+        document.getElementById("maMauInput").value = colorValue;
+    }
+</script>

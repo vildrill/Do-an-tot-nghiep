@@ -1,0 +1,321 @@
+﻿@{
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+@using Web1.Models
+
+
+<script type="text/javascript" src="~/Scripts/Cart.js"></script>
+
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__text">
+                    <h4>Cart</h4>
+                    <div class="breadcrumb__links">
+                        <a href="/Home">Home</a>
+                        <a href="/Product">Product</a>
+                        <span>Cart</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+
+<!-- Shopping Cart Section Begin -->
+<section class="shopping-cart spad">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="shopping__cart__table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Name</th>
+                                <th>Quantity</th>
+                                <th>Total price</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="cart-items-body">
+
+
+                           
+                        </tbody>
+                    </table>
+                </div>
+                
+            </div>
+            <div class="col-lg-4">
+                <div class="cart__discount">
+                    <h6>Discount codes</h6>
+                    <form class="d-flex mx-3 mt-3">
+                        <div class="input-group">
+
+                            <input class="form-control" type="text" id="maGiamGiaInput" placeholder="Discount codes" onkeyup="searchOnKey()">
+                            <div class="input-group-append">
+                                <button class="btn btn-secondary" type="button" id="applyButton">Apply</button>
+                            </div>
+
+                            <div class="table-responsive model_giamGia">
+                                <table class="table text-bg-light">
+
+                                    <tbody id="giamgia-result-body">
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </form>
+                </div>
+                <div class="cart__total">
+                    <h6>Cart total</h6>
+                    <ul>
+                        <li>Subtotal <span id="price">0.00 $</span></li>
+                        <li>Discount <span id="discount">0 %</span></li>
+                        <li>Total <span id="total-price">0.00 $</span></li>
+                    </ul>
+                    <a class="primary-btn text-white " id="checkout-btn">Proceed to checkout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Shopping Cart Section End -->
+
+
+<script>
+    $(document).ready(function () {
+        loadCart();
+
+        function loadCart() {
+            // Lấy danh sách sản phẩm từ Local Storage
+            var cartItemsString = localStorage.getItem("cart");
+            var cartItems = JSON.parse(cartItemsString) || [];
+
+            // Tạo một mảng chứa các productId từ các đối tượng trong cartItems
+            var productIds = cartItems.map(function (item) {
+                return item.productId;
+            });
+
+            // Gửi yêu cầu Ajax để lấy thông tin sản phẩm từ server
+            $.ajax({
+                url: '/Cart/GetProducts',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(productIds),
+                success: function (products) {
+                    var localCart = JSON.parse(localStorage.getItem('cart')) || [];
+                    $('#cart-items-body').empty();
+                    var total = 0; // Biến lưu trữ tổng giá trị
+
+                    products.forEach(function (product) {
+                        var cartItem = localCart.find(item => item.productId === product.id_Product);
+                        var row = $('<tr>');
+
+                        // Thêm cột ảnh sản phẩm
+                        var imageCell = $('<td class="product__cart__item">');
+                        imageCell.append('<div class="product__cart__item__pic"><img src="/Upload/Products/' + product.photo + '" alt="" style="max-width: 100px;"></div>');
+                        row.append(imageCell);
+
+                        // Thêm cột tên sản phẩm
+                        var nameCell = $('<td class="quantity__item">');
+                        nameCell.append('<h6>' + product.name + '</h6>');
+                        nameCell.append('<h5> Size:' + cartItem.size + '</h5>');
+                        nameCell.append('<h5> Color:' + cartItem.color + '</h5>');
+                        row.append(nameCell);
+
+                        // Thêm cột số lượng với các nút tăng/giảm
+                        var quantityCell = $('<td class="quantity__item">');
+                        var quantityControls = `
+                            <div class="quantity-controls">
+                                <button class="btn btn-sm btn-outline-secondary" onclick="updateQuantity(${cartItem.productId}, -1)">-</button>
+                                <h5 class="text-center d-inline mx-2" id="quantity-${cartItem.productId}">${cartItem.quantity}</h5>
+                                <button class="btn btn-sm btn-outline-secondary" onclick="updateQuantity(${cartItem.productId}, 1)">+</button>
+                            </div>`;
+                        quantityCell.append(quantityControls);
+                        row.append(quantityCell);
+
+                        // Tính toán và hiển thị giá
+                        var totalPrice = cartItem.quantity * product.price;
+                        total += totalPrice;
+                        var priceCell = $('<td class="cart__price">');
+                        priceCell.text(totalPrice + 'đ');
+                        row.append(priceCell);
+
+                        // Thêm cột nút xóa
+                        var closeCell = $('<td class="cart__close">');
+                        closeCell.html('<i class="fa fa-close deleteCartItemBtn" onclick="showConfirmModal(' + cartItem.productId + ')"></i>');
+                        row.append(closeCell);
+
+                        $('#cart-items-body').append(row);
+                    });
+
+                    $('#total-price').text(total.toFixed() +'đ');
+                    $('#price').text(total.toFixed() +'đ');
+
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.log('Error:', errorThrown);
+                }
+            });
+        }
+
+        // Hàm cập nhật số lượng sản phẩm
+        window.updateQuantity = function (productId, change) {
+            var cart = JSON.parse(localStorage.getItem('cart')) || [];
+            var cartItem = cart.find(item => item.productId === productId);
+
+            if (cartItem) {
+                // Chuyển quantity về kiểu int và thực hiện phép tính
+                cartItem.quantity = parseInt(cartItem.quantity) + change;
+
+                if (cartItem.quantity < 1) {
+                    cartItem.quantity = 1; // Đảm bảo số lượng không nhỏ hơn 1
+                }
+
+                // Lưu lại giỏ hàng vào localStorage
+                localStorage.setItem('cart', JSON.stringify(cart));
+                $('#quantity-' + productId).text(cartItem.quantity);
+                loadCart(); // Cập nhật lại giao diện giỏ hàng
+            }
+        };
+
+
+        // Hiển thị modal xác nhận xóa sản phẩm
+        window.showConfirmModal = function (productId) {
+            $('#confirmModal').modal('show');
+            $('#confirmBtn').data('productId', productId);
+        };
+
+        // Xóa sản phẩm khỏi giỏ hàng khi người dùng xác nhận
+        $('#confirmBtn').click(function () {
+            var productId = $(this).data('productId');
+            removeCartItem(productId);
+            $('#confirmModal').modal('hide');
+        });
+
+        function removeCartItem(productId) {
+            var cart = JSON.parse(localStorage.getItem('cart')) || [];
+            var index = cart.findIndex(item => item.productId == productId);
+
+            if (index !== -1) {
+                cart.splice(index, 1);
+                localStorage.setItem('cart', JSON.stringify(cart));
+                loadCart();
+            }
+        }
+    });
+
+
+    function searchOnKey() {
+        clearTimeout(typingTimer);
+        typingTimer = setTimeout(searchgiamGia, doneTypingInterval);
+    }
+
+    function searchgiamGia() {
+        var key = $("#maGiamGiaInput").val().trim();
+
+
+        $.ajax({
+            url: '/Cart/SearchGiamGia',
+            method: 'GET',
+            data: { key: key },
+            success: function (response) {
+               
+                var tableGiamGia = '';
+                if (response.length > 0) {
+                    response.forEach(function (item) {
+                        var rowHtml = '<tr onclick="selectMaGiamGia(\'' + item.id_Discount + '\')">';
+                        rowHtml += '<td class="white-bg align-middle"><strong>' + item.name + '</strong></td>';
+                        rowHtml += '<td class="white-bg align-middle"><strong>' + item.percent + '%</strong></td>';
+                        rowHtml += '</tr>';
+                        tableGiamGia += rowHtml;
+
+
+
+                    });
+                } else {
+                    tableGiamGia = '<tr><td colspan="2">No discount code found</td></tr>';
+                }
+                $('#giamgia-result-body').html(tableGiamGia);
+            },
+            error: function (xhr, status, error) {
+                console.log('Error while finding discount code: ' + error);
+            }
+        });
+    }
+
+    function selectMaGiamGia(tenMa) {
+        $("#maGiamGiaInput").val(tenMa);
+        $(".model_giamGia").hide(); 
+    }
+
+    $("button#applyButton").click(function () {
+
+        var maGiamGia = $("input#maGiamGiaInput").val();
+       
+
+       
+        $.ajax({
+            url: '/Cart/KiemTraMaGiamGia',
+            type: 'POST',
+            data: { maGiamGia: maGiamGia },
+            success: function (response) {
+                if (response.success) {
+                    console.log(response);
+
+                    var totalpriceText = $("#price").text().trim();
+                    var totalprice = parseFloat(totalpriceText.replace('đ', ''));
+                    console.log(totalpriceText);
+
+                    var discountPercentage = response.percent; // Phần trăm giảm giá từ phản hồi
+                    var discountAmount = totalprice * (discountPercentage / 100);
+
+                    var newTotalPrice = totalprice - discountAmount;
+                    discount
+                    $('#total-price').text('đ ' + newTotalPrice.toFixed());
+                    $('#discount').text(+ response.percent.toFixed()+'%');
+
+                } else {
+                    console.error(response.message);
+                    $('#errorMessage').text(response.message);
+                    $('#errorAlert').fadeIn('slow').delay(2000).fadeOut('slow');
+                }
+            },
+
+
+            error: function (xhr, status, error) {
+                console.error('Error:', error);
+            }
+        });
+    });
+
+    $(document).ready(function () {
+        $('#checkout-btn').on('click', function (event) {
+            event.preventDefault();
+
+            // Kiểm tra dữ liệu trong local storage
+            var cartItems = JSON.parse(localStorage.getItem('cart')); 
+
+            if (!cartItems || cartItems.length === 0) {
+                $('#successMessage').text('Cart is empty! Please try again.');
+                $('#successAlert').fadeIn('slow').delay(2000).fadeOut('slow');
+            } else {
+                var totalPriceText = $('#total-price').text().trim();
+                var totalPrice = totalPriceText.replace('đ', '').trim();
+
+                var checkoutUrl = 'Cart/Checkout?totalPrice=' + encodeURIComponent(totalPrice);
+
+                window.location.href = checkoutUrl;
+            }
+        });
+    });
+
+
+</script>

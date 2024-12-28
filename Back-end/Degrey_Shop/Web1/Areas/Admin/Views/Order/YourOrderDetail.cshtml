@@ -1,0 +1,175 @@
+﻿@using Web1.Models
+@using Web1.MyClass
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@{
+    Layout = "~/Areas/Admin/Views/Shared/Layout.cshtml";
+}
+
+@functions {
+    public MyDB db = new MyDB();
+}
+
+@{
+    int id_user = @ViewBag.id_user;
+    var user = db.Users.FirstOrDefault(item => item.Id_User == id_user);
+
+}
+<div class="container">
+    <div class="row">
+        <p class="text-center h3">Order detail</p>
+        <div class="col-lg-4 container-fluid">
+            <div class="card border-left-success">
+                @if (user != null)
+                {
+                    <p>ID: <span class="font-weight-bold"> @user.Id_User</span></p>
+                    <p>Name: <span class="font-weight-bold"> @user.Name</span></p>
+                    <p>Phone number: <span class="font-weight-bold"> @user.Phone</span></p>
+                    <p>Email: <span class="font-weight-bold"> @user.Email</span></p>
+
+
+                }
+            </div>
+
+
+        </div>
+        <div class="col-lg-8">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th colspan="7" class="text-end">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <p class="h3 text-dark mb-0">Purchased product</p>
+
+                                    </div>
+                                </th>
+
+                            </tr>
+                            <tr>
+                                <th>Product name</th>
+                                <th>Color</th>
+                                <th>Size</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    @{
+                                        int id_product = item.fk_Id_Product;
+                                        var product = db.Products.FirstOrDefault(p => p.Id_Product == id_product);
+                                    }
+                                    <td>
+                                        <p>
+                                            @product.Name
+                                        </p>
+                                    </td>
+                                    <td>@item.color</td>
+                                    <td>@item.size</td>
+                                    <td>@item.Quantity</td>
+                                    <td>@String.Format("{0:#,##0}đ", item.Price)</td>
+
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <style type="text/css">
+        .pagination {
+            display: inline-block;
+            padding-left: 0;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+            .pagination > li {
+                display: inline;
+            }
+
+                .pagination > li > a,
+                .pagination > li > span {
+                    position: relative;
+                    float: left;
+                    padding: 6px 12px;
+                    margin-left: -1px;
+                    line-height: 1.42857143;
+                    color: #007bff;
+                    text-decoration: none;
+                    background-color: #fff;
+                    border: 1px solid #ddd;
+                }
+
+            .pagination > .active > a,
+            .pagination > .active > span,
+            .pagination > .active > a:hover,
+            .pagination > .active > span:hover,
+            .pagination > .active > a:focus,
+            .pagination > .active > span:focus {
+                z-index: 2;
+                color: #fff;
+                background-color: #007bff;
+                border-color: #007bff;
+                cursor: default;
+            }
+
+            .pagination > li > a:hover,
+            .pagination > li > span:hover,
+            .pagination > li > a:focus,
+            .pagination > li > span:focus {
+                z-index: 2;
+                color: #0056b3;
+                background-color: #e9ecef;
+                border-color: #ddd;
+            }
+
+            .pagination > .disabled > span,
+            .pagination > .disabled > span:hover,
+            .pagination > .disabled > span:focus,
+            .pagination > .disabled > a,
+            .pagination > .disabled > a:hover,
+            .pagination > .disabled > a:focus {
+                color: #999;
+                cursor: not-allowed;
+                background-color: #fff;
+                border-color: #ddd;
+            }
+    </style>
+    <div class="container center">
+        <li class="pagination">
+            @Html.PagedListPager((IPagedList)Model, p => Url.Action("YourOrderDetail", new { page = p, id_Order = ViewBag.id_order }))
+        </li>
+    </div>
+</div>
+
+<style>
+    .fade-out {
+        opacity: 0;
+        transition: opacity 0.5s ease-out;
+    }
+
+    .alert {
+        position: fixed;
+        top: 80px;
+        right: 50px;
+        z-index: 1000;
+        border-radius: 5px;
+    }
+
+    .color-icon {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        margin-right: 5px;
+    }
+</style>    

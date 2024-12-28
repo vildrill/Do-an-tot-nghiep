@@ -1,0 +1,97 @@
+﻿@{
+    //Load file Layout.cshtml
+    Layout = "~/Areas/Admin/Views/Shared/Layout.cshtml";
+
+}
+
+@using Web1.Models;
+
+<div class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card" style="padding:20px;">
+                    <div class="card-header">
+                        <h4 class="card-title">Discount Control</h4>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" action="@ViewBag.action">
+                            <div class="row">
+                                <div class="col-md-3 px-1">
+                                    <div class="form-group">
+                                        <label>Discount Code</label>
+                                        <input type="text" value="@if(Model != null){
+                                        <text>@Model.Name</text>
+                                        }" name="name" class="form-control" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4 pl-1">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Discount Percent</label>
+                                        <input type="number" value="@if(Model != null){
+                                        <text>@Model.Percent</text>
+}"name="percent"
+                                        @if(Model != null){
+                                        <text>disable</text>
+                                        } class="form-control" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Description</label>
+                                        <input type="text" value="@if(Model != null){
+                                        <text>@Model.Description</text>
+                                        }" name="description" class="form-control" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4 pl-1">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">End Date</label>
+                                        <input type="date" value="@if(Model != null){
+                                        <text>@Model.End_Date</text>
+}"name="End_Date"
+                                        @if(Model != null){
+                                        <text>disable</text>
+                                        } class="form-control" required>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3 px-1">
+                                    <div class="form-group">
+                                        <label>Status</label>
+                                        <input type="text" value="@if(Model != null){
+                                        <text>@Model.Status</text>
+                                        }" name="status" class="form-control" required>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row" style="margin-top:5px;">
+                                <div class="col-md-7 px-1">
+                                    <label>Photo</label>
+                                    <div class="form-group">
+                                        <input type="file" name="photo" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <input type="submit" value="Save" class="btn btn-primary">
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

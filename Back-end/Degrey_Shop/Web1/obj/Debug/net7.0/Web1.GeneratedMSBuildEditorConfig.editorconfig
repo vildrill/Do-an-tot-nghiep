@@ -1,0 +1,171 @@
+is_global = true
+build_property.TargetFramework = net7.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = Web1
+build_property.RootNamespace = Web1
+build_property.ProjectDir = D:\UTC\Y4\Đồ án\File đồ án\Back-end\Degrey_Shop\Web1\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 7.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = D:\UTC\Y4\Đồ án\File đồ án\Back-end\Degrey_Shop\Web1
+build_property._RazorSourceGeneratorDebug = 
+
+[D:/UTC/Y4/Đồ án/File đồ án/Back-end/Degrey_Shop/Web1/Areas/Admin/Views/Account/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/UTC/Y4/Đồ án/File đồ án/Back-end/Degrey_Shop/Web1/Areas/Admin/Views/Category/CreateUpdate.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQ2F0ZWdvcnlcQ3JlYXRlVXBkYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/UTC/Y4/Đồ án/File đồ án/Back-end/Degrey_Shop/Web1/Areas/Admin/Views/Category/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQ2F0ZWdvcnlcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/UTC/Y4/Đồ án/File đồ án/Back-end/Degrey_Shop/Web1/Areas/Admin/Views/Color/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQ29sb3JcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/UTC/Y4/Đồ án/File đồ án/Back-end/Degrey_Shop/Web1/Areas/Admin/Views/Color/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQ29sb3JcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/UTC/Y4/Đồ án/File đồ án/Back-end/Degrey_Shop/Web1/Areas/Admin/Views/Color/Update.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcQ29sb3JcVXBkYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/UTC/Y4/Đồ án/File đồ án/Back-end/Degrey_Shop/Web1/Areas/Admin/Views/Discount/CreateUpdate.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcRGlzY291bnRcQ3JlYXRlVXBkYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/UTC/Y4/Đồ án/File đồ án/Back-end/Degrey_Shop/Web1/Areas/Admin/Views/Discount/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcRGlzY291bnRcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/UTC/Y4/Đồ án/File đồ án/Back-end/Degrey_Shop/Web1/Areas/Admin/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/UTC/Y4/Đồ án/File đồ án/Back-end/Degrey_Shop/Web1/Areas/Admin/Views/Order/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcT3JkZXJcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/UTC/Y4/Đồ án/File đồ án/Back-end/Degrey_Shop/Web1/Areas/Admin/Views/Order/YourOrderDetail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcT3JkZXJcWW91ck9yZGVyRGV0YWlsLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/UTC/Y4/Đồ án/File đồ án/Back-end/Degrey_Shop/Web1/Areas/Admin/Views/Product/CreateUpdate.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUHJvZHVjdFxDcmVhdGVVcGRhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/UTC/Y4/Đồ án/File đồ án/Back-end/Degrey_Shop/Web1/Areas/Admin/Views/Product/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcUHJvZHVjdFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/UTC/Y4/Đồ án/File đồ án/Back-end/Degrey_Shop/Web1/Areas/Admin/Views/Shared/Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2hhcmVkXExheW91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/UTC/Y4/Đồ án/File đồ án/Back-end/Degrey_Shop/Web1/Areas/Admin/Views/Size/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2l6ZVxDcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/UTC/Y4/Đồ án/File đồ án/Back-end/Degrey_Shop/Web1/Areas/Admin/Views/Size/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2l6ZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/UTC/Y4/Đồ án/File đồ án/Back-end/Degrey_Shop/Web1/Areas/Admin/Views/Size/Update.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcU2l6ZVxVcGRhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/UTC/Y4/Đồ án/File đồ án/Back-end/Degrey_Shop/Web1/Areas/Admin/Views/Users/CreateUpdate.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcVXNlcnNcQ3JlYXRlVXBkYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/UTC/Y4/Đồ án/File đồ án/Back-end/Degrey_Shop/Web1/Areas/Admin/Views/Users/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = QXJlYXNcQWRtaW5cVmlld3NcVXNlcnNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/UTC/Y4/Đồ án/File đồ án/Back-end/Degrey_Shop/Web1/Views/About/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWJvdXRcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/UTC/Y4/Đồ án/File đồ án/Back-end/Degrey_Shop/Web1/Views/Account/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/UTC/Y4/Đồ án/File đồ án/Back-end/Degrey_Shop/Web1/Views/Account/Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxSZWdpc3Rlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/UTC/Y4/Đồ án/File đồ án/Back-end/Degrey_Shop/Web1/Views/Cart/CheckOut.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FydFxDaGVja091dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/UTC/Y4/Đồ án/File đồ án/Back-end/Degrey_Shop/Web1/Views/Cart/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2FydFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/UTC/Y4/Đồ án/File đồ án/Back-end/Degrey_Shop/Web1/Views/demoVNPay/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcZGVtb1ZOUGF5XEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/UTC/Y4/Đồ án/File đồ án/Back-end/Degrey_Shop/Web1/Views/demoVNPay/PaymentConfirm.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcZGVtb1ZOUGF5XFBheW1lbnRDb25maXJtLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/UTC/Y4/Đồ án/File đồ án/Back-end/Degrey_Shop/Web1/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/UTC/Y4/Đồ án/File đồ án/Back-end/Degrey_Shop/Web1/Views/Order/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/UTC/Y4/Đồ án/File đồ án/Back-end/Degrey_Shop/Web1/Views/Order/paymentconfirm.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJccGF5bWVudGNvbmZpcm0uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/UTC/Y4/Đồ án/File đồ án/Back-end/Degrey_Shop/Web1/Views/Order/YourOrder.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJcWW91ck9yZGVyLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/UTC/Y4/Đồ án/File đồ án/Back-end/Degrey_Shop/Web1/Views/Order/YourOrderDetail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcT3JkZXJcWW91ck9yZGVyRGV0YWlsLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/UTC/Y4/Đồ án/File đồ án/Back-end/Degrey_Shop/Web1/Views/Product/Detail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFxEZXRhaWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/UTC/Y4/Đồ án/File đồ án/Back-end/Degrey_Shop/Web1/Views/Product/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvZHVjdFxJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/UTC/Y4/Đồ án/File đồ án/Back-end/Degrey_Shop/Web1/Views/Shared/Footer.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEZvb3Rlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/UTC/Y4/Đồ án/File đồ án/Back-end/Degrey_Shop/Web1/Views/Shared/Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXExheW91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/UTC/Y4/Đồ án/File đồ án/Back-end/Degrey_Shop/Web1/Views/Shared/LayoutShop.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXExheW91dFNob3AuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/UTC/Y4/Đồ án/File đồ án/Back-end/Degrey_Shop/Web1/Views/Shared/Menu.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXE1lbnUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/UTC/Y4/Đồ án/File đồ án/Back-end/Degrey_Shop/Web1/Views/Store/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3RvcmVcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 

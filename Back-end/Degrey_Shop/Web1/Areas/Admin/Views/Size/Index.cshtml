@@ -1,0 +1,64 @@
+﻿@{
+    //load file Layout.cshtml vao day
+    Layout = "~/Areas/Admin/Views/Shared/Layout.cshtml";
+}
+@* Để phân trang thì using các đối tượng sau *@
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+@using Web1.Models
+
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">Tables</h1>
+    <!-- DataTales Example -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <div style="margin-bottom:5px;">
+
+                <a href="@Url.Action("Create", "Size", new { fk_Id_Product = ViewBag.id_sanPham })" class="btn btn-primary">Add new Size</a>
+               
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th></th>
+
+                            <th style="width:100px;"></th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <th>@item.Id_Size</th>
+                                <th>@item.Name</th>
+                                <th></th>
+                                <th>
+                                    <a href="/Admin/Size/Update/@item.Id_Size">Edit</a>&nbsp;
+                                    <a href="/Admin/Size/Delete/@item.Id_Size" onclick="return window.confirm('Are you sure?');">Delete</a>
+                                </th>
+                            </tr>
+                        }
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+    <style type="text/css">
+        .pagination {
+            padding: 0px;
+        }
+
+        .pagination-container {
+            text-align: center;
+        }
+    </style>
+    @Html.PagedListPager((IPagedList)Model,p=>Url.Action("Index", new{page = p}))
+
+</div>
+<!-- /.container-fluid -->

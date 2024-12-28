@@ -1,0 +1,416 @@
+﻿@{
+    Layout = "~/Views/Shared/Layout.cshtml";
+}
+
+
+<!-- Breadcrumb Section Begin -->
+<section class="breadcrumb-option">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="breadcrumb__text">
+                    <h4>Check out</h4>
+                    <div class="breadcrumb__links">
+                        <a href="/Home">Home</a>
+                        <a href="/Product">Product</a>
+                        <span>Check out</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Breadcrumb Section End -->
+<!-- Checkout Section Begin -->
+<section class="checkout spad">
+    <div class="container">
+        <div class="checkout__form">
+            <form>
+                <div class="row">
+                    <div class="col-lg-8 col-md-6">
+                        <h6 class="coupon__code">
+                            <span class="icon_tag_alt"></span> Have a coupon? <a href="#">
+                                Click
+                                here
+                            </a> to enter your code
+                        </h6>
+                        <h6 class="checkout__title">Billing Details</h6>
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="checkout__input">
+                                    <p>Name<span>*</span></p>
+                                    <input type="text" class="text-black" value="@ViewBag.name">
+                                </div>
+                            </div>
+                           
+                        </div>                        
+
+                        <div class="" >
+                            <p>Address<span>*</span></p>
+                            <div class="row mx-1">
+                            <select id="provinceSelect" name="idTinh" class="col-lg-3 form-control">
+                                <option value="">Choose city</option>
+                                @foreach (var city in Model)
+                                {
+                                    <option value="@city.Id">@city.Name</option>
+                                }
+                            </select>
+                            <!-- Quận/Huyện -->
+                            <select id="district" name="district" class="mx-3 col-lg-3 form-control">
+                                <option value="">Choose district</option>
+                            </select>
+
+                            <!-- Xã/Phường -->
+                            <select id="wardSelect" name="wardSelect" class=" col-lg-3 form-control">
+                                <option value="">Choose ward</option>
+                            </select>
+
+                            </div>
+                        </div>
+                        <div class="checkout__input mt-2">
+                            <p>
+                                House number, street
+                                <span>*</span>
+                            </p>
+                            <input name="street" type="text" placeholder="House number, street">
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col-lg-6">
+                                <div class="checkout__input">
+                                    <p>Phone<span>*</span></p>
+                                    <input type="text" class="text-black" value="@ViewBag.Phone">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="checkout__input">
+                                    <p>Email<span>*</span></p>
+                                    <input type="text" class="text-black" value="@ViewBag.Email">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="checkout__input">
+                            <p>Order notes</p>
+                            <input name="note" type="text" placeholder="Notes about your order, e.g. special notes for delivery.">
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="checkout__order">
+                            <h4 class="order__title">Your order</h4>
+                            <table class="table" id="tableSanPham">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Quantity</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="cart-items-body">
+                                </tbody>
+                            </table>
+
+
+
+                            <ul class="checkout__total__all">
+                                <li>Subtotal <span id="price">0.00 đ</span></li>
+                                <li>Total <span id="total-price">@ViewBag.totalPrice đ</span></li>
+                            </ul>                          
+                            <p>
+                                Remember to select a payment method before paying.
+                            </p>
+                            <div class="checkout__input__checkbox">
+                                <label for="payment">
+                                    Check Payment
+                                    <input type="checkbox" id="payment" name="paymentMethod" class="single-checkbox" value="CheckPayment">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+
+                            <div class="checkout__input__checkbox">
+                                <label for="paypal">
+                                    VN Pay
+                                    <input type="checkbox" id="paypal" name="paymentMethod" class="single-checkbox" value="VNPay">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <button id="Buy" name="Buy" class="Buy site-btn"">
+                PLACE ORDER
+            </button>
+
+        </div>
+    </div>
+</section>
+
+<button class=" C s-btn"">
+    
+</button>
+<script type="text/javascript" src="~/Scripts/Cart.js"></script>
+<script>
+    $(document).ready(function () {
+        // Khi người dùng thay đổi lựa chọn trong dropdown tỉnh/thành phố
+        $('#provinceSelect').change(function () {
+            var selectedCityId = $(this).val(); // Lấy giá trị đã chọn
+
+            // Gọi AJAX để lấy dữ liệu cho dropdown quận/huyện
+            $.ajax({
+                url: '/Cart/danhSachQuanHuyen',
+                type: 'GET',
+                data: { id_city: selectedCityId },
+                success: function (response) {
+                    console.log('AJAX request for districts sent successfully:', response);
+
+                    // Đảm bảo rằng response là một mảng
+                    if (Array.isArray(response)) {
+                        // Xóa các tùy chọn hiện có trong dropdown
+                        $('.district').empty();
+
+                        // Thêm tùy chọn mặc định
+                        $('.district').append($('<option>', {
+                            value: '',
+                            text: 'Chọn Quận/Huyện'
+                        }));
+
+                        // Thêm các tùy chọn mới từ response
+                        $.each(response, function (index, district) {
+                            console.log(district.id),
+                            $('#district').append($('<option>', {
+                                value: district.id,
+                                text: district.name
+                            }));
+                        });
+                    } else {
+                        console.log('Response is not an array:', response);
+                    }
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.log('Lỗi:', errorThrown);
+                }
+            });
+
+        });
+
+        // Khi người dùng thay đổi lựa chọn trong dropdown quận/huyện
+        $('#district').change(function () {
+            var selectedDistrictId = $(this).val(); // Lấy giá trị đã chọn
+
+            // Gọi AJAX để lấy dữ liệu cho dropdown xã/phường
+            $.ajax({
+                url: '/Cart/danhSachXaPhuong',
+                type: 'GET',
+                data: { id_district: selectedDistrictId },
+                success: function (response) {
+                    console.log('AJAX request for districts sent successfully:', response);
+
+                    // Đảm bảo rằng response là một mảng
+                    if (Array.isArray(response)) {
+                        // Xóa các tùy chọn hiện có trong dropdown
+                        $('.wardSelect').empty();
+
+                        // Thêm tùy chọn mặc định
+                        $('.wardSelect').append($('<option>', {
+                            value: '',
+                            text: 'Chọn Xã phường'
+                        }));
+
+                        // Thêm các tùy chọn mới từ response
+                        $.each(response, function (index, ward) {
+                            console.log(district.id),
+                                $('#wardSelect').append($('<option>', {
+                                    value: ward.id,
+                                    text: ward.name
+                                }));
+                        });
+                    } else {
+                        console.log('Response is not an array:', response);
+                    }
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.log('Lỗi:', errorThrown);
+                }
+            });
+        });
+    });
+
+    $(document).ready(function () {
+        // Lấy danh sách productId từ Local Storage
+        var cartItemsString = localStorage.getItem("cart");
+        var cartItems = JSON.parse(cartItemsString);
+
+        var productIds = cartItems.map(function (item) {
+            return item.productId;
+
+
+        });
+        console.log(productIds)
+        $.ajax({
+            url: '/Cart/GetProducts',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(productIds),
+            // Thay thế phần success trong ajax request
+            success: function (products) {
+                var localCart = JSON.parse(localStorage.getItem('cart')) || [];
+
+                // Xóa nội dung hiện có của tbody (nếu có)
+                $('#cart-items-body').empty();
+                var total = 0; // Biến lưu trữ tổng giá trị
+
+                products.forEach(function (product) {
+                    var cartItem = localCart.find(item => item.productId === product.id_Product);
+
+                    // Tạo một hàng mới
+                    var row = $('<tr>');
+
+                   
+                  
+                    // Thêm cột tên sản phẩm
+                    var nameCell = $('<td class="product__cart__item__text">');
+                    nameCell.append('<h6>' + product.name + '</h6>');
+                    row.append(nameCell);
+
+                    // Thêm cột số lượng
+                    var quantityCell = $('<td class="quantity__item">');
+                    quantityCell.append('<h5 class="text-center">' + cartItem.quantity + '</h5>');
+                    row.append(quantityCell);
+
+
+                    var totalPrice = 0;
+                    var totalPrice = cartItem.quantity * product.price;
+                    total += product.price * cartItem.quantity;
+
+                    // Thêm cột giá sản phẩm
+                    var priceCell = $('<td class="cart__price">');
+                    priceCell.text('đ' + totalPrice);
+                    row.append(priceCell);
+
+                   
+
+                    // Thêm hàng vào tbody
+                    $('#cart-items-body').append(row);
+
+                });
+                $('#price').text(total.toFixed() +'đ');
+
+            },
+
+            error: function (xhr, textStatus, errorThrown) {
+                console.log('Error:', errorThrown);
+            }
+        });
+    });
+
+    $(document).ready(function () {
+        $('.single-checkbox').on('click', function () {
+            $('.single-checkbox').not(this).prop('checked', false);
+        });
+
+        $('#Buy').on('click', function () {
+            var TotalString = $('#total-price').text().replace('đ', '');
+            var Total = parseFloat(TotalString);
+
+            var Tinh = $('select[name="idTinh"]').val();
+            var Huyen = $('select[name="district"]').val();
+            var Xa = $('select[name="wardSelect"]').val();
+            var note = $('input[name="note"]').val();
+            
+            var Street = $('input[name="street"]').val();
+
+            var paymentMethod = $('input[name="paymentMethod"]:checked').val();
+
+            // Check if all required fields are filled
+            if (!Tinh || !Huyen || !Xa || !Street) {
+                alert('Please fill in all the required fields.');
+                return;
+            }
+            // Check if a payment method is selected
+            if (!paymentMethod) {
+                alert('Please select a payment method.');
+                return;
+            }
+            $.ajax({
+                url: '/Order/CreateOrder',
+                type: 'POST',
+                data: {
+                    Total: Total,
+                    Tinh: Tinh,
+                    Huyen: Huyen,
+                    Xa: Xa,
+                    Street: Street,
+                    note: note,
+                    paymentMethod: paymentMethod
+                },
+                success: function (response) {
+                    if (response.success) {
+                        var hoaDonId = response.id_hoaDon;
+                        var paymentUrl = response.paymentUrl;
+                        var products = CartClass.Get(); 
+                        if (products && products.length > 0) {
+                            var cartItems = products.map(function (item) {
+                                return {
+                                    productId: item.productId,
+                                    quantity: parseInt(item.quantity),
+                                    color: item.color,
+                                    size: item.size
+                                };
+                            });
+                            $.ajax({
+                                url: '/Order/OrderDetail',
+                                type: 'POST',
+                                data: {
+                                    hoaDonId: hoaDonId,
+                                    chiTietSPIds: cartItems.map(item => item.productId),
+                                    soLuongs: cartItems.map(item => item.quantity),
+                                    color: cartItems.map(item => item.color),
+                                    size: cartItems.map(item => item.size)
+                                },
+                                success: function (response) {
+                                    console.log('Chi tiết hóa đơn đã được tạo thành công.');
+                                    if (paymentUrl == "paymentMethod") {
+                                        $('#successMessage').text('You placed an order!');
+                                        $('#successAlert').fadeIn('slow', function () {
+                                            $(this).delay(5).fadeOut('slow', function () {
+                                                window.location.href = '/';
+                                            });
+                                        });
+                                    } else {
+                                        window.location.href = paymentUrl;
+                                        //console.log('Tiền vnpay');
+
+                                    }
+                                },
+                                error: function (xhr, status, error) {
+                                    console.error('An error occurred while creating order details. Please try again.', error);
+                                    alert('An error occurred while creating order details. Please try again.');
+                                }
+                            });
+                        } else {
+                            alert('There are no products in the cart.');
+                        }
+                    } else {
+                        alert(response.message);
+                    }
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.log('Lỗi:', errorThrown);
+                }
+            });
+        });
+    });
+
+    function checkOnlyOne(checkbox) {
+        var checkboxes = document.getElementsByName('paymentMethod');
+        checkboxes.forEach((item) => {
+            if (item !== checkbox) item.checked = false;
+        });
+    }
+
+</script>
+
+
+
